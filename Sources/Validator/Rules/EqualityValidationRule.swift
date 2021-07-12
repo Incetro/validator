@@ -46,7 +46,7 @@ public struct EqualityValidationRule<T: Equatable>: ValidationRule {
 
     /// Validates the given input
     /// - Parameter input: an input instance
-    public func validate(input: T?) -> Bool {
+    public func validate(input: T) -> Bool {
         if let dynamicTarget = dynamicTarget {
             return input == dynamicTarget()
         }
