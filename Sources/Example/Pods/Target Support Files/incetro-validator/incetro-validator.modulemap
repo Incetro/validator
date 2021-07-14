@@ -1,6 +1,0 @@
-framework module Validator {
-  umbrella header "incetro-validator-umbrella.h"
-
-  export *
-  module * { export * }
-}
