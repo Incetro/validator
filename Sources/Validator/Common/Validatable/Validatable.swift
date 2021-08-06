@@ -5,8 +5,6 @@
 //  Created by incetro on 6/28/21.
 //
 
-import Foundation
-
 let validator = Validator()
 
 // MARK: - Validatable
@@ -49,6 +47,8 @@ extension Validatable {
         return validator.validate(input: self, rules: rules)
     }
 }
+
+// MARK: - Validatable extensions
 
 extension String: Validatable {}
 extension Double: Validatable {}
