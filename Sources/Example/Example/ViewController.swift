@@ -11,7 +11,7 @@ import Validator
 
 // MARK: - ViewController
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
 
     // MARK: - Properties
 
@@ -51,19 +51,9 @@ class ViewController: UIViewController {
 
     private func setup() {
         setupTitleLabel()
-
-        addSection(sectionName: "Regex")
-        setupRegexUsernameCell()
-        setupRegexEmailCell()
-
-        addSection(sectionName: "Length")
-        setupMinimumLengthCell()
-        setupRangeLengthCell()
-
-        addSection(sectionName: "Equality")
-        setupConditionCell()
-        setupEqualityCell()
-        setupPasswordCells()
+        setupRegexCells()
+        setupLengthCells()
+        setupEqualityCells()
     }
 
     private func setupTitleLabel() {
@@ -73,82 +63,71 @@ class ViewController: UIViewController {
             .centerX(to: view.centerX)
     }
 
-    private func setupRegexUsernameCell() {
-        let usernameCell = TextFieldCell()
-        usernameCell.title = "Username:"
-        usernameCell.placeholder = "Regex validation username"
-        usernameCell.textField.add(rule: RegexValidationRule(pattern: Regex.username))
-        usernameCell.textField.validationHandler = {
-            usernameCell.visualizationValidate(isValid: $0.isValid)
+    private func setupCell<Rule>(
+        title: String,
+        placeholder: String,
+        rule: Rule,
+        cornerType: UIView.SmoothCornerType
+    ) where Rule: ValidationRule, UITextField.Input == Rule.Input {
+        let cell = TextFieldCell()
+        cell.title = title
+        cell.placeholder = placeholder
+        cell.textField.add(rule: rule)
+        cell.textField.validationHandler = {
+            cell.visualizationValidate(isValid: $0.isValid)
         }
-        stackView.addRow(usernameCell)
-        stackView.setInset(forRow: usernameCell, inset: Constants.cellInsets)
-        usernameCell.updateConers(.first)
+        stackView.addRow(cell)
+        stackView.setInset(forRow: cell, inset: Constants.cellInsets)
+        cell.updateConers(cornerType)
     }
 
-    private func setupRegexEmailCell() {
-        let mailCell = TextFieldCell()
-        mailCell.title = "Email:"
-        mailCell.placeholder = "Regex validation email"
-        mailCell.textField.add(rule: RegexValidationRule(pattern: Regex.email))
-        mailCell.textField.validationHandler = {
-            mailCell.visualizationValidate(isValid: $0.isValid)
-        }
-        stackView.addRow(mailCell)
-        stackView.setInset(forRow: mailCell, inset: Constants.cellInsets)
-        mailCell.updateConers(.last)
+    private func setupRegexCells() {
+        addSection(sectionName: "Regex")
+        setupCell(
+            title: "Username:",
+            placeholder: "Regex validation username",
+            rule: RegexValidationRule(pattern: Regex.username),
+            cornerType: .first
+        )
+        setupCell(
+            title: "Email:",
+            placeholder: "Regex validation email",
+            rule: RegexValidationRule(pattern: Regex.email),
+            cornerType: .last
+        )
     }
 
-    private func setupMinimumLengthCell() {
-        let minimumLengthCell = TextFieldCell()
-        minimumLengthCell.title = "Min length:"
-        minimumLengthCell.placeholder = "Min length is 5"
-        minimumLengthCell.textField.add(rule: LengthValidationRule(min: 5))
-        minimumLengthCell.textField.validationHandler = {
-            minimumLengthCell.visualizationValidate(isValid: $0.isValid)
-        }
-        stackView.addRow(minimumLengthCell)
-        stackView.setInset(forRow: minimumLengthCell, inset: Constants.cellInsets)
-        minimumLengthCell.updateConers(.first)
+    private func setupLengthCells() {
+        addSection(sectionName: "Length")
+        setupCell(
+            title: "Min length:",
+            placeholder: "Min length is 5",
+            rule: LengthValidationRule(min: 5),
+            cornerType: .first
+        )
+        setupCell(
+            title: "Range length:",
+            placeholder: "Min length is 5, max length is 10",
+            rule: LengthValidationRule(min: 5, max: 10),
+            cornerType: .last
+        )
     }
 
-    private func setupRangeLengthCell() {
-        let rangeLengthCell = TextFieldCell()
-        rangeLengthCell.title = "Range length:"
-        rangeLengthCell.placeholder = "Min length is 5, max length is 10"
-        rangeLengthCell.textField.add(rule: LengthValidationRule(min: 5, max: 10))
-        rangeLengthCell.textField.validationHandler = {
-            rangeLengthCell.visualizationValidate(isValid: $0.isValid)
-        }
-        stackView.addRow(rangeLengthCell)
-        stackView.setInset(forRow: rangeLengthCell, inset: Constants.cellInsets)
-        rangeLengthCell.updateConers(.last)
-    }
-
-    private func setupConditionCell() {
-        let conditionCell = TextFieldCell()
-        conditionCell.title = "Condition:"
-        conditionCell.placeholder = "If entered text is equal to: \"text\""
-        conditionCell.textField.add(rule: ConditionValidationRule { $0 == "text" })
-        conditionCell.textField.validationHandler = {
-            conditionCell.visualizationValidate(isValid: $0.isValid)
-        }
-        stackView.addRow(conditionCell)
-        stackView.setInset(forRow: conditionCell, inset: Constants.cellInsets)
-        conditionCell.updateConers(.first)
-    }
-
-    private func setupEqualityCell() {
-        let equalityCell = TextFieldCell()
-        equalityCell.title = "Equality:"
-        equalityCell.placeholder = "Equality validation to: \"apple\""
-        equalityCell.textField.add(rule: EqualityValidationRule { "apple" })
-        equalityCell.textField.validationHandler = {
-            equalityCell.visualizationValidate(isValid: $0.isValid)
-        }
-        stackView.addRow(equalityCell)
-        stackView.setInset(forRow: equalityCell, inset: Constants.cellInsets)
-        equalityCell.updateConers(.regular)
+    private func setupEqualityCells() {
+        addSection(sectionName: "Equality")
+        setupCell(
+            title: "Condition:",
+            placeholder: "If entered text is equal to: \"text\"",
+            rule: ConditionValidationRule { $0 == "text" },
+            cornerType: .first
+        )
+        setupCell(
+            title: "Equality:",
+            placeholder: "Equality validation to: \"apple\"",
+            rule: EqualityValidationRule { "apple" },
+            cornerType: .regular
+        )
+        setupPasswordCells()
     }
 
     private func setupPasswordCells() {

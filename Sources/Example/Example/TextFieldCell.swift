@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - TextFieldCell
 
-class TextFieldCell: UIView {
+final class TextFieldCell: UIView {
 
     // MARK: - Properties
 
