@@ -5,8 +5,6 @@
 //  Created by incetro on 6/28/21.
 //
 
-import Foundation
-
 // MARK: - EqualityValidationRule
 
 public struct EqualityValidationRule<T: Equatable>: ValidationRule {
