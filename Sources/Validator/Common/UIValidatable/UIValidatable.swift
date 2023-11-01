@@ -5,6 +5,8 @@
 //  Created by incetro on 6/28/21.
 //
 
+import Foundation
+
 // MARK: - UIValidatable
 
 public protocol UIValidatable: AnyObject {
