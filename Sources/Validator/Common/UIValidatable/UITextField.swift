@@ -12,11 +12,11 @@ import UIKit
 extension UITextField: UIValidatable {
 
     /// Input validation value
-    open var inputValue: String { text ?? "" }
+    public var inputValue: String { text ?? "" }
 
     /// Enable/Disable validation logic for .editingChanged event
     /// - Parameter enabled: true if we need to enable validation logic
-    open func validateOnInputChange(enabled: Bool) {
+    public func validateOnInputChange(enabled: Bool) {
         if enabled {
             addTarget(self, action: #selector(performValidation), for: .editingChanged)
         } else {
@@ -26,7 +26,7 @@ extension UITextField: UIValidatable {
 
     /// Enable/Disable validation logic for .editingDidEnd event
     /// - Parameter enabled: true if we need to enable validation logic
-    open func validateOnEditingEnd(enabled: Bool) {
+    public func validateOnEditingEnd(enabled: Bool) {
         if enabled {
             addTarget(self, action: #selector(performValidation), for: .editingDidEnd)
         } else {
